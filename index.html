@@ -1,11 +1,64 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Welcome to My Website</title>
-</head>
-<body>
-  <h1>Hello, GitHub Pages!</h1>
-  <p>This is my first website hosted on GitHub.</p>
-</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+ 
+ <body>
+      <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+  
+    
+      <a-assets>
+        <img id="artwork1-text" src="./assets/artwork1-text.png">
+        <img id="artwork2-text" src="./assets/artwork2-text.png">
+        <img id="artwork3-text" src="./assets/artwork3-text.png">
+        <audio id="success-sound" src="./assets/success.mp3"></audio>  <!-- 音效加入 -->
+      </a-assets>
+
+
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+  
+
+      <!-- 辨識第1個作品 -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-image src="#artwork1-text" position="0 0 0" width="1.5" height="1"></a-image>
+      </a-entity>
+
+      <!-- 辨識第2個作品 -->
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-image src="#artwork2-text" position="0 0 0" width="1.5" height="1"></a-image>
+      </a-entity>
+
+      <!-- 辨識第3個作品 -->
+      <a-entity mindar-image-target="targetIndex: 2">
+        <a-image src="#artwork3-text" position="0 0 0" width="1.5" height="1"></a-image>
+      </a-entity>   
+
+    </a-scene>
+
+
+    <script>
+       document.querySelector('a-scene').addEventListener('loaded', () => {
+       document.getElementById('loading').style.display = 'none';
+     });
+
+     // 掃描到 target 時播放音效
+        const successSound = document.querySelector("#success-sound");
+
+        const targets = document.querySelectorAll("[mindar-image-target]");
+
+        targets.forEach(target => {
+                                    target.addEventListener("targetFound", () => { successSound.play();  });    });
+     </script>
+
+
+
+
+
+  </body>
 </html>
+
